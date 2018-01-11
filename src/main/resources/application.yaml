@@ -5,3 +5,7 @@ spring:
     password: vagrant
 
 flyway.clean-on-validation-error: true
+
+org.random:
+  apiKey: 3104fd4c-01fc-41f6-96f7-56e05df03ded
+  url: https://api.random.org/json-rpc/1/invoke

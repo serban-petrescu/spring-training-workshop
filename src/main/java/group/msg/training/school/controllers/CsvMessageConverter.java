@@ -28,7 +28,7 @@ public class CsvMessageConverter extends AbstractGenericHttpMessageConverter<Lis
 
     @Override
     protected void writeInternal(List<Object> objects, Type type, HttpOutputMessage httpOutputMessage) throws IOException {
-        throw new NotImplementedException();
+        converter.write(extractPojoClassFromType(type), objects, httpOutputMessage.getBody());
     }
 
     @Override
@@ -39,7 +39,10 @@ public class CsvMessageConverter extends AbstractGenericHttpMessageConverter<Lis
     @Override
     @SuppressWarnings("unchecked")
     public List<Object> read(Type type, Class<?> aClass, HttpInputMessage httpInputMessage) throws IOException {
-        Class<?> pojo = (Class<?>) ((ParameterizedType) type).getActualTypeArguments()[0];
-        return (List<Object>)converter.read(pojo, httpInputMessage.getBody());
+        return (List<Object>)converter.read(extractPojoClassFromType(type), httpInputMessage.getBody());
+    }
+
+    private Class<?> extractPojoClassFromType(Type type) {
+        return (Class<?>) ((ParameterizedType) type).getActualTypeArguments()[0];
     }
 }
