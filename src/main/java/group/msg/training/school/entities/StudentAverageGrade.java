@@ -10,6 +10,7 @@ import javax.persistence.Id;
 public class StudentAverageGrade {
     @Id
     private int studentId;
+	private String studentName;
     private int groupId;
     private float average;
 }

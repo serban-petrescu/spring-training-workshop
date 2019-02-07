@@ -1,7 +1,6 @@
-package group.msg.training.school.controllers;
+package group.msg.training.school.controllers.rest;
 
 import group.msg.training.school.util.CsvConverter;
-import org.apache.commons.lang.NotImplementedException;
 import org.springframework.http.HttpInputMessage;
 import org.springframework.http.HttpOutputMessage;
 import org.springframework.http.MediaType;
@@ -23,7 +22,14 @@ public class CsvMessageConverter extends AbstractGenericHttpMessageConverter<Lis
 
     @Override
     public boolean canRead(Type type, Class<?> contextClass, MediaType mediaType) {
-        return type instanceof ParameterizedType && ((ParameterizedType) type).getRawType().equals(List.class) && canRead(mediaType);
+		return type instanceof ParameterizedType && ((ParameterizedType) type).getRawType().equals(List.class) &&
+				canRead(mediaType);
+	}
+
+	@Override
+	public boolean canWrite(Type type, Class<?> clazz, MediaType mediaType) {
+		return type instanceof ParameterizedType && ((ParameterizedType) type).getRawType().equals(List.class) &&
+				canWrite(mediaType);
     }
 
     @Override

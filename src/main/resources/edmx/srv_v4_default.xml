@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx" Version="4.0">
+    <edmx:DataServices>
+        <Schema xmlns="http://docs.oasis-open.org/odata/ns/edm" Namespace="group.msg.training.school">
+            <EntityType Name="Group">
+                <Key>
+                    <PropertyRef Name="id"/>
+                </Key>
+                <Property Name="id" Type="Edm.Int32"/>
+                <Property Name="year" Type="Edm.Int32"/>
+                <Property Name="name" Type="Edm.String"/>
+                <Property Name="specialization" Type="Edm.String"/>
+                <NavigationProperty Name="Students" Type="Collection(group.msg.training.school.Student)"/>
+            </EntityType>
+
+            <EntityType Name="Student">
+                <Key>
+                    <PropertyRef Name="id"/>
+                </Key>
+                <Property Name="id" Type="Edm.Int32"/>
+                <Property Name="groupId" Type="Edm.Int32"/>
+                <Property Name="name" Type="Edm.String"/>
+                <NavigationProperty Name="Grades" Type="Collection(group.msg.training.school.Grade)"/>
+            </EntityType>
+
+            <EntityType Name="Grade">
+                <Key>
+                    <PropertyRef Name="id"/>
+                </Key>
+                <Property Name="id" Type="Edm.Int32"/>
+                <Property Name="studentId" Type="Edm.Int32"/>
+                <Property Name="score" Type="Edm.Int32"/>
+                <Property Name="date" Type="Edm.Date"/>
+            </EntityType>
+
+            <ComplexType Name="AverageGrade">
+                <Property Name="studentId" Type="Edm.Int32"/>
+                <Property Name="studentName" Type="Edm.String"/>
+                <Property Name="groupId" Type="Edm.Int32"/>
+                <Property Name="average" Type="Edm.Single"/>
+            </ComplexType>
+
+            <Function Name="GetStudentsForHomeworkCheck">
+                <Parameter Name="groupId" Type="Edm.Int32" Nullable="false"/>
+                <Parameter Name="count" Type="Edm.Int32" Nullable="true"/>
+                <ReturnType Type="Collection(group.msg.training.school.Student)"/>
+            </Function>
+
+            <Function Name="GetAverageGradesForGroup">
+                <Parameter Name="groupId" Type="Edm.Int32" Nullable="false"/>
+                <ReturnType Type="Collection(group.msg.training.school.AverageGrade)"/>
+            </Function>
+
+            <Function Name="GetRandomIntegers">
+                <Parameter Name="min" Type="Edm.Int32" Nullable="false"/>
+                <Parameter Name="max" Type="Edm.Int32" Nullable="false"/>
+                <Parameter Name="count" Type="Edm.Int32" Nullable="false"/>
+                <ReturnType Type="Collection(Edm.Int32)"/>
+            </Function>
+
+            <EntityContainer Name="container">
+                <EntitySet Name="Groups" EntityType="group.msg.training.school.Group">
+                    <NavigationPropertyBinding Path="Students" Target="Students"/>
+                </EntitySet>
+                <EntitySet Name="Students" EntityType="group.msg.training.school.Student">
+                    <NavigationPropertyBinding Path="Grades" Target="Grades"/>
+                </EntitySet>
+                <EntitySet Name="Grades" EntityType="group.msg.training.school.Grade"/>
+
+                <FunctionImport Name="GetStudentsForHomeworkCheck" EntitySet="Students"
+                                Function="group.msg.training.school.GetStudentsForHomeworkCheck"/>
+
+                <FunctionImport Name="GetAverageGradesForGroup"
+                                Function="group.msg.training.school.GetAverageGradesForGroup"/>
+
+                <FunctionImport Name="GetRandomIntegers"
+                                Function="group.msg.training.school.GetRandomIntegers"/>
+            </EntityContainer>
+        </Schema>
+    </edmx:DataServices>
+</edmx:Edmx>

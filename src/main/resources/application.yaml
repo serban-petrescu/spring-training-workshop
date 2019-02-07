@@ -1,11 +1,18 @@
 spring:
+  jpa.open-in-view: false
   datasource:
-    url: jdbc:postgresql://localhost:5432/school
-    username: vagrant
-    password: vagrant
-
-flyway.clean-on-validation-error: true
+    url: jdbc:postgresql://192.168.99.100:5432/postgres
+    username: postgres
+    password: postgres
+  flyway.clean-on-validation-error: true
 
 org.random:
   apiKey: 3104fd4c-01fc-41f6-96f7-56e05df03ded
   url: https://api.random.org/json-rpc/1/invoke
+
+logging.level:
+  org.hibernate.engine.jdbc.env.internal.LobCreatorBuilderImpl: WARN
+  com.sap.cloud.sdk.service.prov.v2.rt.core.extensions.ExtensionRegistryImpl: OFF
+  com.sap.cloud.sdk.service.prov.v4.rt.core.extensions.ExtensionRegistryImpl: OFF
+
+server.servlet.context-parameters.package: group.msg.training.school.util

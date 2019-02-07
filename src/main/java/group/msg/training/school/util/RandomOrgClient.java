@@ -5,8 +5,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import group.msg.training.school.config.RandomOrgApiConfig;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
@@ -17,15 +17,10 @@ import java.util.UUID;
 
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class RandomOrgClient implements RandomNumberGenerator {
     private final RestTemplate restTemplate;
     private final RandomOrgApiConfig config;
-
-    @Autowired
-    public RandomOrgClient(RestTemplate restTemplate, RandomOrgApiConfig config) {
-        this.restTemplate = restTemplate;
-        this.config = config;
-    }
 
     @Override
     public Set<Integer> generateIntegers(int count, int min, int max) {
@@ -50,7 +45,7 @@ public class RandomOrgClient implements RandomNumberGenerator {
         private final String id = UUID.randomUUID().toString();
         private final ApiParams params;
 
-        public ApiInput(ApiParams params) {
+		ApiInput(ApiParams params) {
             this.params = params;
         }
     }
@@ -63,7 +58,7 @@ public class RandomOrgClient implements RandomNumberGenerator {
         private final int max;
         private final boolean replacement = false;
 
-        public ApiParams(String apiKey, int n, int min, int max) {
+		ApiParams(String apiKey, int n, int min, int max) {
             this.apiKey = apiKey;
             this.n = n;
             this.max = max;

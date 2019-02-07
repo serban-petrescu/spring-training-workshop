@@ -22,7 +22,9 @@ public class StudentMapper {
 
     public static OutboundStudent toOutbound(Student student) {
         OutboundStudent outboundStudent = new OutboundStudent();
+		outboundStudent.setId(student.getId());
         outboundStudent.setName(student.getName());
+		outboundStudent.setNumber(student.getNumber());
         return outboundStudent;
     }
 

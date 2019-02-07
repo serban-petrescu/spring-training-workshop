@@ -1,6 +1,7 @@
 package group.msg.training.school.util;
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
@@ -8,15 +9,10 @@ import java.util.Set;
 
 @Primary
 @Component
+@RequiredArgsConstructor
 public class CompositeRandomGenerator implements RandomNumberGenerator {
     private final RandomOrgClient randomOrgBasedGenerator;
     private final FallbackNumberGenerator fallbackNumberGenerator;
-
-    public CompositeRandomGenerator(RandomOrgClient randomOrgBasedGenerator,
-                                    FallbackNumberGenerator fallbackNumberGenerator) {
-        this.randomOrgBasedGenerator = randomOrgBasedGenerator;
-        this.fallbackNumberGenerator = fallbackNumberGenerator;
-    }
 
     @Override
     @HystrixCommand(fallbackMethod = "fallback")

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx" Version="1.0">
+    <edmx:DataServices xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+                       m:DataServiceVersion="3.0" m:MaxDataServiceVersion="3.0">
+        <Schema Namespace="group.msg.training.school" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+            <EntityType Name="Group">
+                <Key>
+                    <PropertyRef Name="id"/>
+                </Key>
+                <Property Name="id" Type="Edm.Int32"/>
+                <Property Name="year" Type="Edm.Int32"/>
+                <Property Name="name" Type="Edm.String"/>
+                <Property Name="specialization" Type="Edm.String"/>
+                <NavigationProperty Name="Students" Relationship="group.msg.training.school.GroupStudents"
+                                    ToRole="Group_Student" FromRole="Student_Group"/>
+            </EntityType>
+
+            <EntityType Name="Student">
+                <Key>
+                    <PropertyRef Name="id"/>
+                </Key>
+                <Property Name="id" Type="Edm.Int32"/>
+                <Property Name="groupId" Type="Edm.Int32"/>
+                <Property Name="name" Type="Edm.String"/>
+                <NavigationProperty Name="Grades" Relationship="group.msg.training.school.StudentGrades"
+                                    ToRole="Student_Grade" FromRole="Grade_Student"/>
+            </EntityType>
+
+            <EntityType Name="Grade">
+                <Key>
+                    <PropertyRef Name="id"/>
+                </Key>
+                <Property Name="id" Type="Edm.Int32"/>
+                <Property Name="studentId" Type="Edm.Int32"/>
+                <Property Name="score" Type="Edm.Int32"/>
+                <Property Name="date" Type="Edm.DateTime"/>
+            </EntityType>
+
+            <ComplexType Name="AverageGrade">
+                <Property Name="studentId" Type="Edm.Int32"/>
+                <Property Name="studentName" Type="Edm.String"/>
+                <Property Name="groupId" Type="Edm.Int32"/>
+                <Property Name="average" Type="Edm.Single"/>
+            </ComplexType>
+
+            <Association Name="GroupStudents">
+                <End Type="group.msg.training.school.Group" Role="Student_Group" Multiplicity="1"/>
+                <End Type="group.msg.training.school.Student" Role="Group_Student" Multiplicity="*"/>
+            </Association>
+            <Association Name="StudentGrades">
+                <End Type="group.msg.training.school.Student" Role="Grade_Student" Multiplicity="1"/>
+                <End Type="group.msg.training.school.Grade" Role="Student_Grade" Multiplicity="*"/>
+            </Association>
+
+            <EntityContainer Name="container" m:IsDefaultEntityContainer="true">
+                <EntitySet Name="Groups" EntityType="group.msg.training.school.Group"/>
+                <EntitySet Name="Students" EntityType="group.msg.training.school.Student"/>
+                <EntitySet Name="Grades" EntityType="group.msg.training.school.Grade"/>
+
+                <FunctionImport Name="GetStudentsForHomeworkCheck"
+                                ReturnType="Collection(group.msg.training.school.Student)"
+                                EntitySet="Students" m:HttpMethod="GET">
+                    <Parameter Name="groupId" Type="Edm.Int32" Nullable="false"/>
+                    <Parameter Name="count" Type="Edm.Int32" Nullable="true"/>
+                </FunctionImport>
+
+                <FunctionImport Name="GetAverageGradesForGroup" m:HttpMethod="GET"
+                                ReturnType="Collection(group.msg.training.school.AverageGrade)">
+                    <Parameter Name="groupId" Type="Edm.Int32" Nullable="false"/>
+                </FunctionImport>
+
+                <FunctionImport Name="GetRandomIntegers" m:HttpMethod="GET"
+                                ReturnType="Collection(Edm.Int32)">
+                    <Parameter Name="min" Type="Edm.Int32" Nullable="false"/>
+                    <Parameter Name="max" Type="Edm.Int32" Nullable="false"/>
+                    <Parameter Name="count" Type="Edm.Int32" Nullable="false"/>
+                </FunctionImport>
+
+                <AssociationSet Name="GroupStudents" Association="group.msg.training.school.GroupStudents">
+                    <End Role="Student_Group" EntitySet="Groups"/>
+                    <End Role="Group_Student" EntitySet="Students"/>
+                </AssociationSet>
+
+                <AssociationSet Name="StudentGrades" Association="group.msg.training.school.StudentGrades">
+                    <End Role="Grade_Student" EntitySet="Students"/>
+                    <End Role="Student_Grade" EntitySet="Grades"/>
+                </AssociationSet>
+            </EntityContainer>
+        </Schema>
+    </edmx:DataServices>
+</edmx:Edmx>
