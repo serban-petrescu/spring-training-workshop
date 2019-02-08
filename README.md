@@ -7,6 +7,10 @@ After cloning the project, a Docker container for the database must be fired up 
 ## APIs
 This application must expose REST, OData V2 and OData V4 APIs for accessing the business logic.
 
+All these API may be tested with Postman: 
+
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/f76548833d56bd190e97)
+
 ## Business Specification
 A small application that can be used by a professor to keep track of individual grades the students from the groups that he is teaching. 
 
